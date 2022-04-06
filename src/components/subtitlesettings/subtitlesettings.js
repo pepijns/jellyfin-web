@@ -31,7 +31,7 @@ function getSubtitleAppearanceObject(context) {
     appearanceSettings.dropShadow = context.querySelector('#selectDropShadow').value;
     appearanceSettings.font = context.querySelector('#selectFont').value;
     appearanceSettings.textBackground = context.querySelector('#inputTextBackground').value;
-    appearanceSettings.textColor = context.querySelector('#inputTextColor').value;
+    appearanceSettings.textColor = layoutManager.tv ? context.querySelector('#selectTextColor').value : context.querySelector('#inputTextColor').value;
     appearanceSettings.verticalPosition = context.querySelector('#sliderVerticalPosition').value;
 
     return appearanceSettings;
@@ -55,6 +55,7 @@ function loadForm(context, user, userSettings, appearanceSettings, apiClient) {
         context.querySelector('#selectTextSize').value = appearanceSettings.textSize || '';
         context.querySelector('#selectDropShadow').value = appearanceSettings.dropShadow || '';
         context.querySelector('#inputTextBackground').value = appearanceSettings.textBackground || 'transparent';
+        context.querySelector('#selectTextColor').value = appearanceSettings.textColor || '#ffffff';
         context.querySelector('#inputTextColor').value = appearanceSettings.textColor || '#ffffff';
         context.querySelector('#selectFont').value = appearanceSettings.font || '';
         context.querySelector('#sliderVerticalPosition').value = appearanceSettings.verticalPosition;
@@ -168,6 +169,7 @@ function embed(options, self) {
     options.element.querySelector('#selectTextSize').addEventListener('change', onAppearanceFieldChange);
     options.element.querySelector('#selectDropShadow').addEventListener('change', onAppearanceFieldChange);
     options.element.querySelector('#selectFont').addEventListener('change', onAppearanceFieldChange);
+    options.element.querySelector('#selectTextColor').addEventListener('change', onAppearanceFieldChange);
     options.element.querySelector('#inputTextColor').addEventListener('change', onAppearanceFieldChange);
     options.element.querySelector('#inputTextBackground').addEventListener('change', onAppearanceFieldChange);
 
@@ -198,6 +200,10 @@ function embed(options, self) {
                 sliderVerticalPosition.classList.add('focusable');
                 sliderVerticalPosition.enableKeyboardDragging();
             }, 0);
+
+            // Replace color picker
+            dom.parentWithTag(options.element.querySelector('#inputTextColor'), 'DIV').classList.add('hide');
+            dom.parentWithTag(options.element.querySelector('#selectTextColor'), 'DIV').classList.remove('hide');
         }
 
         options.element.querySelector('.chkPreview').addEventListener('change', (e) => {
